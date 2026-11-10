@@ -26,7 +26,7 @@ python3 <仓库目录>/tests/test_dry_run.py      # 不需要 Key，全部 OK �
 
 ## 2. Key：只放保险库，不进聊天、不进文件、不进记忆
 
-- 需要的 Key：`AISA_API_KEY`（必填，在 https://console.aisa.one 创建）。其他可选 Key 见各 Bot 的 `job.md`。
+- 需要的 Key：`AISA_API_KEY`（必填，在 https://go.aisa.one/rain 注册后，到控制台创建）。其他可选 Key 见各 Bot 的 `job.md`。
 - **请用户自己把 Key 放进你的保险库 / Secret 存储**。如果你没有保险库，请用户写进工作目录下权限为 600 的 `.env`。
 - 用户把 Key 直接贴进聊天时：照常使用，但提醒用户这样不安全、建议之后换一个新 Key；**不要把 Key 写进记忆、技能、笔记或任何回复里**。
 - 验证 Key（免费，不扣钱）：`python3 <仓库目录>/lib/aisa/aisa_cli.py balance`

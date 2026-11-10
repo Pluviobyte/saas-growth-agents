@@ -4,7 +4,7 @@
 
 本仓库调用以下服务，但不包含它们的代码。使用时须遵守各自的条款：
 
-- [AIsa](https://aisa.one)：所有数据接口的统一入口（Twitter、TikHub、DataForSEO、Ahrefs、Firecrawl、Tavily、CoinGecko、Financial、Polymarket、FRED、Perplexity）
+- [AIsa](https://go.aisa.one/rain)：所有数据接口的统一入口（Twitter、TikHub、DataForSEO、Ahrefs、Firecrawl、Tavily、CoinGecko、Financial、Polymarket、FRED、Perplexity）
 - 哥飞新词服务（seo.web.cafe）：新词监控的可选数据源，需要自己的账号
 - Product Hunt、GitHub、Reddit、CapCut 的公开页面和订阅源：新词监控的雷达
 
