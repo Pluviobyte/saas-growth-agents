@@ -1,0 +1,11 @@
+{
+ "_fixture": "FICTIONAL",
+ "success": true,
+ "data": {
+  "markdown": "# Demo article\n\nThis is a fictional article body used for dry runs.",
+  "metadata": {
+   "title": "Demo article",
+   "author": "Demo Writer"
+  }
+ }
+}

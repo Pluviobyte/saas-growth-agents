@@ -1,0 +1,29 @@
+{
+ "_fixture": "FICTIONAL",
+ "tasks": [
+  {
+   "status_code": 20000,
+   "result": [
+    {
+     "items": [
+      {
+       "type": "youtube_subtitles",
+       "text": "Welcome to the demo.",
+       "start_time": 0
+      },
+      {
+       "type": "youtube_subtitles",
+       "text": "Step one: write the SOP down.",
+       "start_time": 3.2
+      },
+      {
+       "type": "youtube_subtitles",
+       "text": "Step two: let the bot run it.",
+       "start_time": 6.4
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

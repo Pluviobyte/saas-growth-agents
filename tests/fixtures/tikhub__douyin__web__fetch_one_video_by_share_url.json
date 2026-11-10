@@ -1,0 +1,20 @@
+{
+ "_fixture": "FICTIONAL",
+ "data": {
+  "aweme_detail": {
+   "aweme_id": "7000000000000000000",
+   "desc": "演示视频：三步把链接整理进知识库 #AI工具",
+   "create_time": 1762650000,
+   "author": {
+    "nickname": "演示作者"
+   },
+   "statistics": {
+    "digg_count": 5200,
+    "comment_count": 310,
+    "share_count": 800,
+    "collect_count": 2100,
+    "play_count": 180000
+   }
+  }
+ }
+}

@@ -1,0 +1,17 @@
+{
+ "_fixture": "FICTIONAL",
+ "tweets": [
+  {
+   "id": "1900000000000000001",
+   "text": "Demo tweet: we shipped an open-source agent that turns links into notes.",
+   "createdAt": "2026-11-08T10:00:00Z",
+   "author": {
+    "userName": "demo_user"
+   },
+   "likeCount": 120,
+   "retweetCount": 30,
+   "replyCount": 8,
+   "viewCount": 15000
+  }
+ ]
+}

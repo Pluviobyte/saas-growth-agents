@@ -1,0 +1,16 @@
+{
+ "_fixture": "FICTIONAL",
+ "data": {
+  "note": {
+   "title": "演示笔记：我的 AI 工作流",
+   "desc": "这是一条演示用的小红书笔记正文，用来测试提取流程。",
+   "time": 1762650000,
+   "user": {
+    "nickname": "演示博主"
+   },
+   "liked_count": 3400,
+   "collected_count": 1200,
+   "comments_count": 56
+  }
+ }
+}

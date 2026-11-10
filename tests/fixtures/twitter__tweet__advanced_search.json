@@ -1,0 +1,23 @@
+{
+ "_fixture": "FICTIONAL",
+ "tweets": [
+  {
+   "id": "1900000000000000101",
+   "text": "BREAKING (demo): exchange hot wallet hack reported, withdrawals paused",
+   "createdAt": "2026-11-09T01:00:00Z",
+   "author": {
+    "userName": "demo_news"
+   },
+   "likeCount": 900,
+   "retweetCount": 400
+  },
+  {
+   "id": "1900000000000000102",
+   "text": "Nice weather today (demo, should not match)",
+   "author": {
+    "userName": "demo_other"
+   }
+  }
+ ],
+ "has_next_page": false
+}

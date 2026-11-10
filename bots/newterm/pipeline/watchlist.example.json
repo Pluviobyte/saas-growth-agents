@@ -1,0 +1,41 @@
+{
+  "_说明": "复制成工作目录里的 watchlist.json，再换成你自己赛道的竞品站和导航站。下面的域名都是示例，照抄跑不出结果。watchlist.json 是你的个人数据，不要提交到公开仓库。",
+  "sitemaps": {
+    "_说明": "竞品站：盯它们 sitemap 里新出现的页面，新页面的 slug 就是它们在抢的词。type = meme（模板/梗）/ ai（AI 产品、模型）/ event（游戏活动、新闻）",
+    "competitor-one.example": {
+      "type": "meme",
+      "roots": ["https://competitor-one.example/sitemap.xml"]
+    },
+    "competitor-two.example": {
+      "type": "meme",
+      "roots": ["https://www.competitor-two.example/sitemap.xml"],
+      "keep": "^https://(?:www\\.)?competitor-two\\.example/templates/[^/]+/?$",
+      "exclude": ["popular", "new"],
+      "page": "template"
+    },
+    "big-platform.example": {
+      "type": "ai",
+      "big": true,
+      "roots": ["https://big-platform.example/sitemap-index.xml"],
+      "path": "^models/([a-z0-9-]+)$",
+      "name": "ai",
+      "page": "model"
+    }
+  },
+  "paid_nav": {
+    "_说明": "导航站：盯它们的新上架页、RSS 或工具 sitemap，新工具名里藏着新词。parser = anchor_keep / rss / sitemap / toolify_new / taaft_new / saashub_new",
+    "directory-one.example": {
+      "enabled": true,
+      "label": "Directory One",
+      "listing_pages": ["https://directory-one.example/new"],
+      "keep": "/tool/([a-z0-9-]+)/?$",
+      "parser": "anchor_keep"
+    },
+    "directory-two.example": {
+      "enabled": true,
+      "label": "Directory Two",
+      "feeds": ["https://directory-two.example/feed"],
+      "parser": "rss"
+    }
+  }
+}

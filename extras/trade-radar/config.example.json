@@ -1,0 +1,22 @@
+{
+  "$comment": "复制成 config.json 再改。coins 用 CoinGecko 的 id；stocks 用美股代码；x_queries 是 X 高级搜索语句；keywords 命中才算触发。",
+  "move_window_min": 15,
+  "default_move_pct": 3,
+  "coins": [
+    {"id": "bitcoin", "symbol": "BTC", "move_pct": 3},
+    {"id": "ethereum", "symbol": "ETH", "move_pct": 3}
+  ],
+  "stocks": [
+    {"ticker": "NVDA", "move_pct": 5},
+    {"ticker": "COIN", "move_pct": 5}
+  ],
+  "price_alerts": [
+    {"asset": "bitcoin", "below": 77000, "rearm": 77500},
+    {"asset": "bitcoin", "above": 80000, "rearm": 79500}
+  ],
+  "x_queries": [
+    "(hack OR exploit OR stolen OR 被盗 OR 漏洞) (binance OR coinbase OR okx OR bybit) -is:retweet",
+    "(investigation OR lawsuit OR resign OR 调查 OR 起诉 OR 辞职) (nvidia OR jensen) -is:retweet"
+  ],
+  "keywords": ["hack", "exploit", "stolen", "被盗", "漏洞", "investigation", "lawsuit", "resign", "调查", "起诉", "辞职", "bankrupt", "破产", "ban", "禁令"]
+}

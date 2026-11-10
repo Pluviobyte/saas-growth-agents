@@ -1,0 +1,13 @@
+{
+ "_fixture": "FICTIONAL",
+ "bitcoin": {
+  "usd": 76800.0,
+  "usd_24h_change": -4.1,
+  "last_updated_at": 1762650000
+ },
+ "ethereum": {
+  "usd": 3020.5,
+  "usd_24h_change": -5.3,
+  "last_updated_at": 1762650000
+ }
+}

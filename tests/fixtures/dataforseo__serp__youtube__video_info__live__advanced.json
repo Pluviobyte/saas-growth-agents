@@ -1,0 +1,23 @@
+{
+ "_fixture": "FICTIONAL",
+ "tasks": [
+  {
+   "status_code": 20000,
+   "result": [
+    {
+     "items": [
+      {
+       "type": "youtube_video_info",
+       "title": "Demo: building agents with SOPs",
+       "channel_name": "Demo Channel",
+       "publication_date": "2026-11-01",
+       "views_count": 42000,
+       "likes_count": 1900,
+       "description": "A fictional video description for dry runs."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

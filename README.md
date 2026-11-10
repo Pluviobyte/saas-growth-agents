@@ -1,77 +1,146 @@
-# douyin-comments
+<div align="center">
 
-**抓取抖音单条视频完整评论区的 Agent Skill。** 抓取范围包括一级评论、全部楼中楼回复和视频详情，可选下载 720p 视频，最终输出一份按点赞排序的 `评论全文.md` 和原始 JSON。
+<img src="assets/icon.png" width="112" alt="saas-growth-agents">
 
-请求在你自己已登录的 Chrome 页面里发出，签名交给页面自带的 SDK 计算。不需要 TikHub 之类的付费接口，不需要 Playwright，也不用逆向 a_bogus。
+# saas-growth-agents
 
-## 实测
+### Hand your SaaS growth chores to an agent that runs them every day.
 
-| 视频 | 抓到 | 视频显示评论数 | 请求 / 耗时 | 验证码 |
-| --- | --- | --- | --- | --- |
-| 7 分钟 AI 工具视频 | 一级 83 + 回复 112 = 195 | 195 | 35 次 / 138 秒 | 无 |
-| 46 分钟教程 | 一级 77 + 回复 58 = 135 | 135 | 63 次 / 252 秒 | 无 |
+**Spot new search terms, find who ranks for them, check competitor backlinks, submit to directories, and file good posts into a knowledge base.**<br>
+These jobs repeat daily and follow fixed steps, which makes them perfect SOPs for an agent.<br>
+Create a bot, send it one sentence, and it reads this repo, asks you a few questions, and sets itself up.
 
-第一条与逐个手动点「展开回复」抓到的结果逐条比对，完全一致。手动方式用了约 6 分钟。
+[![Stars](https://img.shields.io/github/stars/Pluviobyte/saas-growth-agents?style=flat&color=111111&cacheSeconds=3600)](https://github.com/Pluviobyte/saas-growth-agents/stargazers) [![License](https://img.shields.io/badge/license-MIT-111111)](LICENSE) [![Python](https://img.shields.io/badge/python_3-stdlib_only-111111?logo=python&logoColor=white)](lib/aisa/client.py) [![Data](https://img.shields.io/badge/data-AIsa-F26B1D)](https://go.aisa.one/rain)<br>
+[![Grok Bot](https://img.shields.io/badge/Grok_Bot-recommended-000000?logo=x&logoColor=white)](https://grok.com/refer/bot?code=NASHTX8NMYH3) ![Muse](https://img.shields.io/badge/Muse-333333) ![Dot](https://img.shields.io/badge/Dot-333333) ![Hermes](https://img.shields.io/badge/Hermes-333333) ![OpenClaw](https://img.shields.io/badge/OpenClaw-333333) ![Claude Code](https://img.shields.io/badge/Claude_Code-D97757?logo=claude&logoColor=white) ![Codex](https://img.shields.io/badge/Codex-111111)
 
-## 原理
+**[Quick start](#quick-start)** &nbsp;·&nbsp; **[The bots](#the-bots)** &nbsp;·&nbsp; **[One-line setup](bootstrap.md)** &nbsp;·&nbsp; **[AGENTS.md](AGENTS.md)** &nbsp;·&nbsp; **[Grok Bot free for 14 days](https://grok.com/refer/bot?code=NASHTX8NMYH3)** &nbsp;·&nbsp; **English** · [简体中文](README.zh-CN.md)
 
-抖音 Web 评论接口要带 a_bogus、msToken、uifid 等风控参数。如果只带 `device_platform` 和 `aid` 去调楼中楼接口，会立刻弹出文字点选验证码，请求一直挂起。原因是缺少页面正常请求里都有的那 30 多个公共参数。
+<br>
 
-所以这个 skill 不自己拼参数，而是**照抄页面的真实请求**：
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/flow-dark.svg">
+  <img alt="Data flow: sources go through AIsa into three script pipelines (new-term radar, site ops, social analysis). Scripts only do deterministic work such as collecting, deduping and logging. The agent analyzes, verifies and reports, then pushes to you to decide. State lives in files and ledgers that are read before every run. Spending, sending and deleting all need your OK." src="assets/flow-light.svg" width="900">
+</picture>
 
-1. `page_hook.js`：拦截页面自己发出的第一次评论请求，把它的 URL 和请求头记成模板。
-2. `page_fetch.js`（主路线）：之后每次请求只替换 `aweme_id`、`cursor`、`comment_id` 三个参数，其余照抄。请求从页面内的 XHR 发出，由页面 SDK 补上签名。
-3. `page_ui_expand.js`（兜底路线）：在评论区逐个点「展开 N 条回复」，由页面自己发请求，脚本只截获响应。这条路线慢，但不会触发风控。
-4. `recv.py`：本机接收服务，页面把每一页响应 POST 到 `127.0.0.1` 落盘。
-5. `build_report.py`：合并去重，逐楼核对回复数有没有抓全，再生成 `评论全文.md`。
+</div>
 
-请求节奏为每次间隔 2～4 秒，每 15 次额外停 8～15 秒。
+<br>
 
-## 依赖
+These are the SOPs and scripts the author runs for their own SaaS tools aimed at overseas markets. Any agent that can run terminal commands and keep long-lived instructions can use them.
 
-- Claude Code，并连接 Claude in Chrome 浏览器扩展（在 Claude Code 里执行 `/chrome`）
-- 已登录抖音的 Chrome
-- Python 3（只用标准库）、curl
+> **Coming from douyin-comments?** This repo *is* the old douyin-comments, now merged into the full growth system. The Douyin comments skill is unchanged and lives in the social analysis pack at [`bots/social-kb/douyin-comments/`](bots/social-kb/douyin-comments/SKILL.md). See [how to reinstall](bots/social-kb/README.md#installed-douyin-comments-before).
 
-## 安装
+**The whole system runs on three rules:**
 
-```sh
-git clone https://github.com/Pluviobyte/douyin-comments.git ~/.claude/skills/douyin-comments
+1. **Scripts do the deterministic work**: collecting, deduping, scoring and logging. Results are reproducible and replayable, never a model's "feeling".
+2. **The agent judges**: it reads what the scripts produce, then analyzes, extracts, verifies and reports. If data is missing it says so instead of making things up.
+3. **You decide**: the agent only pushes conclusions. Spending money, sending anything out and deleting all need your OK. Every correction you make becomes a new rule in its skills.
+
+## The bots
+
+| Bot | What you do | What it does |
+|---|---|---|
+| [New-term radar](bots/newterm/job.md) | Nothing | Three reports a day on newly searchable terms: new AI products, models, memes, templates. Sources include Google Trends, competitor sitemaps, new directory listings, Product Hunt, GitHub Trending, Reddit and TikTok |
+| [Site ops](bots/site-ops/job.md) | Give it keywords and your product | Finds every site competing for a keyword, checks their DR and backlinks, tracks your own site's metrics daily, submits to free directories by the rules, and logs everything |
+| [Social analysis pack](bots/social-kb/README.md) | Drop a link when you see something good | Fetches the original (X, Douyin, RedNote, YouTube, WeChat, any web page) → summarizes → extracts "what could improve your SOPs" against your own workflow → files it by topic. For Douyin it can also pull the full comment section |
+
+Plus an unrelated extra, [Trade radar](extras/trade-radar/job.md): watches price moves and breaking events and pushes an analysis. **It analyzes only and never places orders.**
+
+## Which agent
+
+**Grok Bot, Muse, Dot, Hermes and OpenClaw** all work, and so do Claude Code and Codex. [AGENTS.md](AGENTS.md) has the generic steps; each product just has its own name for "routines" (scheduled tasks) and "vault" (secret storage).
+
+**The author recommends Grok Bot.** It comes with a cloud computer, a vault, skills and routines. These SOPs were first built on Grok Bot, and once installed they run around the clock on routines.
+
+> No Grok Bot yet? Sign up with the author's invite link to get 14 days free: **https://grok.com/refer/bot?code=NASHTX8NMYH3**
+> (This is a referral link and the author is rewarded for sign-ups. Grok's official page has the current terms.)
+
+## Quick start
+
+1. Create a new bot in your agent.
+2. Send it the matching sentence from [bootstrap.md](bootstrap.md), for example:
+
+   ```text
+   Read AGENTS.md in https://github.com/Pluviobyte/saas-growth-agents and set yourself up as the newterm (new-term radar) bot. Ask me one question at a time.
+   ```
+
+3. It asks you to put your [AIsa](https://go.aisa.one/rain) key in its vault, does one run by hand to show you, and only turns it into a routine once you're happy.
+
+The whole process is **do it once → tweak until it's right → save as a skill → schedule as a routine**.
+
+The job descriptions and SOP docs inside the repo are written in Chinese. Agents read them fine, and the bot will talk to you in your language.
+
+## Where the data comes from
+
+All external data goes through [AIsa](https://go.aisa.one/rain): one key for thousands of APIs, pay per call, with MCP support. This repo uses:
+
+- **SEO**: DataForSEO SERP and Google Trends, Ahrefs
+- **Social**: Twitter, TikHub (Douyin, RedNote), DataForSEO YouTube (transcripts, video info)
+- **Web**: Firecrawl, Tavily
+- **Trade radar**: CoinGecko, Financial (US stocks), Polymarket, FRED, Perplexity
+
+Each API maps to one function in [lib/aisa/sources.py](lib/aisa/sources.py), with paths and parameters checked against AIsa's official OpenAPI spec.
+Every request carries a price cap and anything over it is rejected. Not sure what a call costs? Add `--quote` to ask first; quotes are free.
+
+> The AIsa links are the author's referral links. The Douyin comments module doesn't use AIsa; it runs in your own logged-in browser for free.
+
+## Optional: run logs
+
+For a sturdier setup where you can trace what went wrong, add the [run log module](lib/runlog/README.md). It records:
+
+- whether each routine ran, whether it succeeded, and what it cost
+- what you approved
+- when a rule was changed, and why
+
+A nightly health check lists failed, stuck and missed runs, plus cost spikes.
+
+> ⚠️ **It uses more of your bot's quota, so it's off by default and the bot asks during setup.** There are three levels:
+> - Light: approvals and rule changes only, almost no extra quota.
+> - Standard: adds a record for every routine run.
+> - Full: adds the nightly check and weekly archiving.
+>
+> Logs are local files only, so AIsa costs don't change. (The module's doc is in Chinese; agents read it fine.)
+
+## Repo layout
+
+```
+saas-growth-agents/
+├── AGENTS.md               setup steps for the agent
+├── bootstrap.md            the one sentence to send your bot
+├── lib/aisa/               AIsa layer: client.py (stdlib), sources.py (data sources), aisa_cli.py (CLI)
+├── lib/runlog/             optional: run log, approvals, rule changes, nightly health check (uses more bot quota)
+├── bots/
+│   ├── newterm/            new-term radar: job.md · routines.md · check.md · pipeline/ · skills/ · install.sh
+│   ├── site-ops/           site ops: job.md · routines.md · check.md · scripts/ · skills/
+│   └── social-kb/          social analysis pack: README.md · job.md · routines.md · check.md · scripts/ · douyin-comments/
+├── extras/trade-radar/     trade radar (extra)
+├── skills/agent-setup/     for Claude Code / Codex: asks what you need and writes a tailored setup message for your bot
+├── templates/              ledger formats
+└── tests/                  dry-run tests that need no key (all sample data is fictional)
 ```
 
-也可以放到项目的 `.claude/skills/` 下。如果目标目录已存在，先检查里面的内容，不要直接覆盖。
+Every bot folder has the same shape: `job.md` is the job description, `routines.md` the schedule, `check.md` the acceptance checklist.
 
-## 使用
+## Try it without a key
 
-在 Claude Code 里给一个抖音视频链接，并说明要抓评论：
-
-```text
-抓一下这条视频的评论区 https://www.douyin.com/video/7xxxxxxxxxxxxxxxxxx
+```bash
+git clone https://github.com/Pluviobyte/saas-growth-agents.git && cd saas-growth-agents
+python3 tests/test_dry_run.py                                        # full dry run
+AISA_DRY_RUN=1 python3 bots/site-ops/scripts/serp_sites.py "ai video generator"
 ```
 
-支持三种链接：`douyin.com/video/<id>`、带 `modal_id=<id>` 的主页链接，以及 `v.douyin.com` 短链。
+## Boundaries
 
-产出默认写到当前项目的 `.internal/抖音评论/<aweme_id>/`：
+- **No CAPTCHA solving, no filling in passwords, no signing up for accounts on your behalf.** It stops and hands those to you.
+- **Directory submissions only go to free sites that don't require a backlink.** Paid and link-exchange sites are skipped, with the reason logged.
+- **Out of scope for this repo**:
+  - browser-extension batch jobs: unclear license
+  - scraping through shared accounts: against platform terms
+  - mass blog-comment backlinks: that's link spam
+  - real site pools, submission logs and keyword lists: personal data
+- Other people's content is for learning notes only, never for reposting. Keep request rates low and follow each platform's terms.
+- Trade radar contains no order-placing code, and its ledger rejects position and order fields. Its output is information, not investment advice.
 
-```
-raw/                  # 模板、每页原始响应、接收日志
-comments_top.json     # 一级评论（去重）
-comments_replies.json # 楼中楼回复（去重）
-评论全文.md            # 按点赞排序，回复缩进在所属评论下面
-参考视频.mp4           # 可选
-```
+## License
 
-完整流程见 [SKILL.md](SKILL.md)。
-
-## 边界
-
-- **不代点验证码。** 出现验证码时 skill 会停下，由你在 Chrome 里手动完成，然后继续。
-- 只处理单条视频，不批量采集博主的全部作品，也不支持小红书和 B 站。
-- 被删除、被折叠或仅作者可见的评论，接口不会返回，所以抓到的总数可能略少于视频显示的评论数。
-- 上千条评论的视频：一级评论翻到约 500 条之后接口开始返回重复内容，被折叠的评论也拿不到，实测抓到 823 / 1067。
-- 尚未实测：单个楼超过 20 条回复时的翻页。
-- 仅用于个人研究和内容参考。请遵守抖音用户协议，控制频率，不要用于批量采集或商业分发。
-
-## 致谢
-
-整体思路参考了 [MediaCrawler](https://github.com/NanmiCoder/MediaCrawler)：公共参数集、uifid 请求头、先抓一级评论再逐楼抓回复、请求间留间隔。本仓库没有使用它的代码。
+[MIT](LICENSE). Third-party services and credits are in [NOTICE.md](NOTICE.md).

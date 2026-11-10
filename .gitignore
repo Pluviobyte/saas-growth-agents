@@ -1,7 +1,43 @@
-.DS_Store
+# 密钥和本地配置
+.env
+.env.*
+!.env.example
+.aisa/
+**/.aisa/
+*.key
+
+# 运行产物（各 Bot 的工作目录不应该放在仓库里，这里兜底）
+config.json
+state.json
+judgment-ledger.jsonl
+materials/
+inbox/
+kb/
+sites.csv
+metrics.jsonl
+own_sites.txt
+directory-submits/
+prescan_*/
+radar/
+pushed.json
+tiktok_pool.json
+aisa_calls.log
+aisa-calls.log
+raw/
+*.mp4
+
 __pycache__/
 *.pyc
-# 抓取产物不进仓库
-raw/
-.internal/
-*.mp4
+.DS_Store
+
+# 生成数据流图用的字体（OFL，自行下载）
+assets/src/fonts/
+
+# 运行日志（可选模块）
+logs/
+runs.jsonl
+approvals.jsonl
+rules-changelog.md
+
+# 新词监控的个人监控名单（只放工作目录）
+watchlist.json

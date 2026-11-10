@@ -1,0 +1,32 @@
+{
+ "_fixture": "FICTIONAL",
+ "tasks": [
+  {
+   "status_code": 20000,
+   "result": [
+    {
+     "items": [
+      {
+       "type": "organic",
+       "rank_group": 1,
+       "url": "https://www.youtube.com/watch?v=demo"
+      },
+      {
+       "type": "organic",
+       "rank_group": 2,
+       "url": "https://demo-tool-one.example/"
+      },
+      {
+       "type": "organic",
+       "rank_group": 3,
+       "url": "https://www.demo-tool-two.example/pricing"
+      },
+      {
+       "type": "people_also_ask"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

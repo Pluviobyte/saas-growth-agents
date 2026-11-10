@@ -1,0 +1,9 @@
+{
+ "_fixture": "FICTIONAL",
+ "results": [
+  {
+   "url": "https://example.com",
+   "raw_content": "Fictional extracted content."
+  }
+ ]
+}

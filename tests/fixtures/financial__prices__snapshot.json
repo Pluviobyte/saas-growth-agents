@@ -1,0 +1,8 @@
+{
+ "_fixture": "FICTIONAL",
+ "snapshot": {
+  "ticker": "DEMO",
+  "price": 180.25,
+  "day_change_percent": -3.4
+ }
+}
