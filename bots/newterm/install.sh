@@ -9,6 +9,8 @@ mkdir -p "$DEST/radar"
 cp "$REPO"/bots/newterm/pipeline/*.py "$REPO"/bots/newterm/pipeline/*.sh "$REPO"/bots/newterm/pipeline/BROADCAST_FORMAT.md "$REPO"/bots/newterm/pipeline/watchlist.example.json "$DEST/"
 cp "$REPO"/lib/aisa/aisa_keyring.py "$REPO"/lib/aisa/aisa_trends.py "$DEST/"
 chmod +x "$DEST"/*.sh
+# 有自己维护的名单（不进公开仓库）就一起装上，已有的不覆盖
+[ -f "$REPO/bots/newterm/pipeline/watchlist.json" ] && [ ! -f "$DEST/watchlist.json" ] && cp "$REPO/bots/newterm/pipeline/watchlist.json" "$DEST/"
 [ -f "$DEST/pushed.json" ] || echo '{}' > "$DEST/pushed.json"
 [ -f "$DEST/tiktok_pool.json" ] || echo '{"memes": {}}' > "$DEST/tiktok_pool.json"
 [ -f "$DEST/.env" ] || cp "$REPO/.env.example" "$DEST/.env"

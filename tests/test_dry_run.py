@@ -111,7 +111,6 @@ class NewtermWatchlist(unittest.TestCase):
     def test_watchlist_driven(self):
         import shutil
         pipe = ROOT / 'bots' / 'newterm' / 'pipeline'
-        self.assertFalse((pipe / 'watchlist.json').exists())
         with tempfile.TemporaryDirectory() as d:
             for f in ('radar_sitemaps.py', 'radar_paid_nav.py', 'radar_common.py', 'radar_oldword_newsites.py',
                       'watchlist.example.json'):
